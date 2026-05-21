@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Birth Info App</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background:
+            linear-gradient(135deg,#0f172a,#1e293b,#312e81);
+        overflow:hidden;
+        color:white;
+    }
+
+    .stars{
+        position:absolute;
+        width:100%;
+        height:100%;
+        overflow:hidden;
+        z-index:0;
+    }
+
+    .star{
+        position:absolute;
+        width:2px;
+        height:2px;
+        background:white;
+        border-radius:50%;
+        opacity:.7;
+        animation:twinkle 3s infinite alternate;
+    }
+
+    @keyframes twinkle{
+        from{opacity:.2;}
+        to{opacity:1;}
+    }
+
+    .container{
+        position:relative;
+        z-index:2;
+        width:400px;
+        padding:35px;
+        border-radius:25px;
+        background:rgba(255,255,255,0.08);
+        backdrop-filter:blur(12px);
+        box-shadow:0 10px 40px rgba(0,0,0,.4);
+        text-align:center;
+    }
+
+    h1{
+        font-size:2rem;
+        margin-bottom:10px;
+    }
+
+    p.subtitle{
+        color:#cbd5e1;
+        margin-bottom:30px;
+    }
+
+    input{
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:12px;
+        outline:none;
+        margin-bottom:20px;
+        font-size:1rem;
+        background:rgba(255,255,255,.12);
+        color:white;
+    }
+
+    input::-webkit-calendar-picker-indicator{
+        filter:invert(1);
+        cursor:pointer;
+    }
+
+    button{
+        width:100%;
+        padding:14px;
+        border:none;
+        border-radius:12px;
+        background:linear-gradient(90deg,#8b5cf6,#6366f1);
+        color:white;
+        font-size:1rem;
+        font-weight:bold;
+        cursor:pointer;
+        transition:.3s;
+    }
+
+    button:hover{
+        transform:translateY(-2px);
+        opacity:.9;
+    }
+
+    .result{
+        margin-top:25px;
+        text-align:left;
+        background:rgba(255,255,255,.08);
+        padding:20px;
+        border-radius:18px;
+        display:none;
+        animation:fadeIn .5s ease;
+    }
+
+    @keyframes fadeIn{
+        from{
+            opacity:0;
+            transform:translateY(10px);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0);
+        }
+    }
+
+    .result h2{
+        margin-bottom:15px;
+        color:#c4b5fd;
+    }
+
+    .item{
+        margin-bottom:12px;
+    }
+
+    .label{
+        color:#a5b4fc;
+        font-weight:bold;
+    }
+
+    .error{
+        margin-top:15px;
+        color:#fca5a5;
+        font-weight:bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+    <h1>✨ Zodiac Birth Info</h1>
+    <p class="subtitle">
+        Discover your birth day and zodiac personality
+    </p>
+
+    <input type="date" id="birthDate"/>
+
+    <button onclick="getBirthInfo()">
+        Reveal My Cosmic Info
+    </button>
+
+    <div class="error" id="error"></div>
+
+    <div class="result" id="result">
+        <h2 id="zodiacTitle"></h2>
+
+        <div class="item">
+            <span class="label">📅 Birth Date:</span>
+            <span id="birthDateText"></span>
+        </div>
+
+        <div class="item">
+            <span class="label">🗓 Day of Week:</span>
+            <span id="weekday"></span>
+        </div>
+
+        <div class="item">
+            <span class="label">♈ Zodiac:</span>
+            <span id="zodiac"></span>
+        </div>
+
+        <div class="item">
+            <span class="label">✨ Personality:</span>
+            <span id="personality"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Create stars background
+    const starsContainer = document.getElementById('stars');
+
+    for(let i=0;i<120;i++){
+        const star = document.createElement('div');
+        star.classList.add('star');
+
+        star.style.left = Math.random()*100 + '%';
+        star.style.top = Math.random()*100 + '%';
+
+        star.style.animationDelay = Math.random()*5 + 's';
+
+        starsContainer.appendChild(star);
+    }
+
+    async function getBirthInfo(){
+
+        const date = document.getElementById('birthDate').value;
+        const errorDiv = document.getElementById('error');
+        const resultDiv = document.getElementById('result');
+
+        errorDiv.innerHTML = "";
+
+        if(!date){
+            errorDiv.innerHTML = "Please select a birth date.";
+            return;
+        }
+
+        try{
+
+            // CHANGE THIS URL TO YOUR API URL
+            const response = await fetch(
+                `http://127.0.0.1:8000/birth-info?date=${date}`
+            );
+
+            const data = await response.json();
+
+            if(data.error){
+                errorDiv.innerHTML = data.error;
+                return;
+            }
+
+            document.getElementById('zodiacTitle').innerHTML =
+                `🌌 ${data.zodiac_sign}`;
+
+            document.getElementById('birthDateText').innerHTML =
+                data.birth_date;
+
+            document.getElementById('weekday').innerHTML =
+                data.day_of_week;
+
+            document.getElementById('zodiac').innerHTML =
+                data.zodiac_sign;
+
+            document.getElementById('personality').innerHTML =
+                data.personality;
+
+            resultDiv.style.display = "block";
+
+        }catch(error){
+
+            errorDiv.innerHTML =
+                "Could not connect to API. Make sure FastAPI is running.";
+
+            console.error(error);
+        }
+    }
+</script>
+
+</body>
+</html>
