@@ -1,14 +1,22 @@
-# zodiacbirth-api.py
+# app.py
 # FastAPI example
 # Install:
 # pip install fastapi uvicorn
 
 from fastapi import FastAPI
 from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 import calendar
 
 app = FastAPI(title="Birth Info API")
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ZODIAC_SIGNS = [
     ((1, 20), "Capricorn", "Disciplined, ambitious, practical, and responsible."),
