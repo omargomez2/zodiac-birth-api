@@ -65,7 +65,7 @@ git clone https://github.com/YOUR_USERNAME/cosmic-profile-api.git
 ## 2. Enter the project folder
 
 ```bash
-cd cosmic-profile-api
+cd zodiac-birth-api
 ```
 
 ## 3. Create virtual environment (recommended)
