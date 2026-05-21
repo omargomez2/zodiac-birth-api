@@ -44,7 +44,7 @@ Example response:
 # 📂 Project Structure
 
 ```bash
-cosmic-profile-api/
+zodiac-birth-api-main/
 │
 ├── zodiacbirth-api.py
 ├── zodiacbirth-client.html
@@ -59,13 +59,13 @@ cosmic-profile-api/
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cosmic-profile-api.git
+git clone https://github.com/omargomez2/zodiac-birth-api.git
 ```
 
 ## 2. Enter the project folder
 
 ```bash
-cd zodiac-birth-api
+cd zodiac-birth-api-main
 ```
 
 ## 3. Create virtual environment (recommended)
