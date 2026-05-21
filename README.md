@@ -96,7 +96,7 @@ pip install -r requirements.txt
 # ▶️ Run the API
 
 ```bash
-uvicorn app:zodiacbirth-api --reload
+python -m uvicorn zodiacbirth-api:app --reload
 ```
 
 Server will start at:
