@@ -46,8 +46,8 @@ Example response:
 ```bash
 cosmic-profile-api/
 │
-├── app.py
-├── index.html
+├── zodiacbirth-api.py
+├── zodiacbirth-client.html
 ├── requirements.txt
 └── README.md
 ```
@@ -92,29 +92,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-# 📄 requirements.txt
-
-Create a file named:
-
-```bash
-requirements.txt
-```
-
-Add:
-
-```txt
-fastapi
-uvicorn
-```
-
----
 
 # ▶️ Run the API
 
 ```bash
-uvicorn app:app --reload
+uvicorn app:zodiacbirth-api --reload
 ```
 
 Server will start at:
@@ -155,7 +137,7 @@ http://127.0.0.1:8000/birth-info?date=1995-07-14
 Simply open:
 
 ```bash
-index.html
+zodiacbirth-api.html
 ```
 
 in your browser.
@@ -201,11 +183,6 @@ You can deploy this project using:
 
 ---
 
-# 🧑‍💻 Author
-
-Built with FastAPI and cosmic vibes ✨
-
----
 
 # 📜 License
 
